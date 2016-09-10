@@ -136,16 +136,59 @@ function getSnapshot(historyData, id){
 	var animals = [];
 	var animalTemp;
 	var i, j, k;
-	for(i=0; i<data.length; i++){
+	var positionArr = [];
+	var tempObj;
+	for(i = 0; i<data.length; i++){
 		animalTemp = data[i].animal;
-
+		tempObj = {};
 		for(j=0; j<animalTemp.length; j++){
+			
 			if(animalTemp[j].startX !== undefined){
 				animals.push(animalTemp[j].name);
+
+				tempObj[animalTemp[j].name] = [animalTemp[j].startX, animalTemp[j].startY]
+			}else{
+				tempObj[animalTemp[j].name] = [animalTemp[j].preX, animalTemp[j].preY,animalTemp[j].disX,  animalTemp[j].disY];
 			}
 		}
-
+		positionArr.push(tempObj);
 	}
+	console.log(positionArr);
+	var flag = true;
+	for(i=1; i<positionArr.length; i++){
+		for(key in positionArr[i]){
+			if(positionArr[i][key].length === 2){
+				j = i-1;
+				while(positionArr[j][key] === undefined && j>=0){
+					j --;
+				}
+				if(j >= 0){
+					if(positionArr[j][key][1] !== positionArr[i][key][1]||positionArr[j][key][2] !== positionArr[i][key][2]){
+						flag = false;
+						break;
+					}
+				}
+			}else{
+				j = i-1;
+				while(positionArr[j][key] === undefined && j>=0){
+					j --;
+				}
+				if(j >= 0){
+					if(positionArr[j][key][1] !== positionArr[i][key][1]+positionArr[i][key][3]||positionArr[j][key][2] !== positionArr[i][key][2]+positionArr[i][key][4]){
+						flag = false;
+						break;
+					}
+				}
+			}
+		}
+		if(flag === false){
+			break;
+		}
+	}
+	if(flag === false){
+		return "Conflict found at "+id;
+	}
+
 	animals = animals.sort(function(a, b){
 		if(a < b){
 			return false;
@@ -157,11 +200,16 @@ function getSnapshot(historyData, id){
 	var result = [];
 	var animalInfo;
 	
+	var cur = 0;
+	while(data[cur].id != id){
+		cur ++;
+	}
+
 	for(i=0; i<animals.length; i++){
 		for(j=0; j<data.length; j ++){
 			animalTemp = data[j].animal;
 			
-			for(k=0; k<animalTemp.length; k++){
+			for(k=cur; k<animalTemp.length; k++){
 				if(animalTemp[k].name === animals[i]){
 					if(animalTemp[k]["startX"] === undefined){
 						animalInfo = [animalTemp[k].name, animalTemp[k].preX+animalTemp[k].disX, animalTemp[k].preY+animalTemp[k].disY];
