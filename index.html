@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>getSnapshot</title>
+	<style type="text/css">
+	.parent{
+		position: relative;
+		height: 500px;
+		
+		margin: 0 auto;
+		width: 80%;
+	}
+	.child{
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		width: 600px;
+		height: 300px;
+		background-color: gray;
+		text-align: center;
+		
+	}
+	.inputTitle{
+		margin-top: 20px; 
+		font-size: 1.5em;
+		color: white;
+		font-weight: bold;
+		display: inline-block;
+	}
+	.container{
+		display: flex;
+	}
+	.inputHistoryData,.outputData{
+		margin-top: 20px; 
+		font-size: 1.2em;
+	
+	}
+	.inputHistoryData{
+		flex: 2;
+		
+	}
+	.outputData{
+		flex: 1.5;
+		
+	}
+	.operate{
+	
+		flex: 0.5;
+		
+		position: relative;
+	}
+	#caculate{
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+	.inputTitle{
+		position: relative;
+		
+	}
+	#timeID{
+		height: 1.5em;
+		border: none;
+		border-bottom: 1px solid white;
+		line-height: 1.5em;
+		background-color: gray;
+		outline: none;
+		
+	}
+	</style>
+	<script src="caculateAnimalPosition.js"></script>
+	<script type="text/javascript">
+	window.onload = function(){
+		var calBtn = document.getElementById("caculate");
+		calBtn.onclick = function(){
+			var inputData = document.getElementById('input').value;
+			var timeID = document.getElementById('timeID').value;
+			
+			var animalsPosition = getSnapshot(inputData, timeID)
+			document.getElementById('output').value = animalsPosition;
+		}
+	}
+	</script>
+</head>
+<body>
+<div class="parent">
+	<div class="child">
+		<div class="inputTitle">
+			<span>计算动物</span>
+			<input type="input" id="timeID">
+			<span>某时刻位置</span>
+		</div>
+		<div class="container">
+			<div class="inputHistoryData">
+				<textarea rows="12" cols="37" id="input"></textarea>
+			</div>
+			<div class="operate">
+				<input type="button" value="caculate" id="caculate">
+			</div>
+			<div class="outputData">
+				<textarea rows="12" cols="27" readonly="true" id="output">
+
+				</textarea>
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+</body>
+</html>

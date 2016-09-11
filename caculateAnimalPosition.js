@@ -1,47 +1,4 @@
-/*var sourceData = [
-	{
-		id: "e4e87cb2-8e9a-4749-abb6-26c59344dfee",
-		time: "2016/09/02 22:30:46",
-		animal: [
-			{
-				name: "cat1",
-				startX: 10,
-				startY: 9
-			}
-		]
-	},
-	{
-		id: "351055db-33e6-4f9b-bfe1-16f1ac446ac1",
-		time: "2016/09/02 22:30:52",
-		animal: [
-			{
-				name: "cat1",
-				preX: 10,
-				preY: 9,
-				disX: 2,
-				disY: -1
-			},
-			{
-				name: "cat2",
-				startX: 2,
-				startY: 3
-			}
-		]
-	},
-	{
-		id: "dcfa0c7a-5855-4ed2-bc8c-4accae8bd155",
-		time: "2016/09/02 22:31:02",
-		animal: [
-			{
-				name: "cat1",
-				preX: 12,
-				preY: 8,
-				disX: 3,
-				disY: 4
-			}
-		]
-	}
-]*/
+
 
 var sourceDataString = "e4e87cb2-8e9a-4749-abb6-26c59344dfee\n"+
 				   "2016/09/02 22:30:46\n"+
@@ -267,11 +224,24 @@ function getSnapshot(historyData, id){
 				}
 
 			}
-			return result;
+			var output = "";
+			//console.log(result);
+			for(i=0; i<result.length; i++){
+				for(j=0; j<result[i].length; j ++){
+					output += result[i][j];
+					if(j === result[i].length -1){
+						output += "\n";
+					}else{
+						output += " ";
+					}
+				}
+			}
+			//console.log(output);
+			return output;
 		}
 	}
 }
 
-var result = getSnapshot(sourceDataString, "dcfa0c7a-5855-4ed2-bc8c-4accae8bd155");
-console.log(result);
+//var result = getSnapshot(sourceDataString, "dcfa0c7a-5855-4ed2-bc8c-4accae8bd155");
+//console.log(result);
 
