@@ -56,78 +56,43 @@ var sourceDataString = "e4e87cb2-8e9a-4749-abb6-26c59344dfee\n"+
 
 function animalSplit(animalDataStr){
 	var animalDataAttr = animalDataStr.split(" ");
+	animalDataAttr = animalDataAttr.filter(function(item){
+		if(item !== " "){
+			return true;
+		}
+	});
 	return animalDataAttr;
 }
 
-//字符串转对象，//格式错误返回null,否则返回对象
-function strToArr(sourceDataString){
-	var timeIDPattern = /^((\d|[a-f]){8})-((\d|[a-f]){4})-((\d|[a-f]){4})-((\d|[a-f]){4})-((\d|[a-f]){12})$/;//
-	var timePattern = /^[0-9]{4}\/(0[1-9]{1}|1[0-2]{1})\/(0[1-9]{1}|[1-2]{1}[0-9]{1}|30)\s{1}(0\d{1}|1\d{1}|2[0-3]):[0-5]\d{1}:([0-5]\d{1})$/;
-	var positionPattern = /^-?\w+\s(-?\d+\s-?\d+\s-?\d+\s-?\d+|-?\d+\s-?\d+)$/;
-
-	var sourceDataAttr = sourceDataString.split('\n');
-
-	var sourceData = [];
-	var data, animal, animalDataAttr;
-	var i;
-	var flag;
-	i = 0;
-	while( i<sourceDataAttr.length){
-		if(timeIDPattern.test(sourceDataAttr[i])){//判断是否是时间id
-			
-			data = {};
-			data.id = sourceDataAttr[i];
-			i ++;
-			if(timePattern.test(sourceDataAttr[i])){//如果下一行是时间，就没问题，否则格式错误
-				data.time = sourceDataAttr[i];
-				i ++;
-			}else{
-				flag = false;
-				break;
-			}
-			data.animal = [];
-			while(positionPattern.test(sourceDataAttr[i])){//循环遍历该时刻的所有动物记录
-				animalDataAttr = animalSplit(sourceDataAttr[i]);
-				animal = {};
-				animal.name = animalDataAttr[0];
-				if(animalDataAttr.length === 3){
-					animal.startX = parseInt(animalDataAttr[1]);
-					animal.startY = parseInt(animalDataAttr[2]);
-				}else{
-					animal.preX = parseInt(animalDataAttr[1]);
-					animal.preY = parseInt(animalDataAttr[2]);
-					animal.disX = parseInt(animalDataAttr[3]);
-					animal.disY = parseInt(animalDataAttr[4]);
-				}
-				data.animal.push(animal);
-				i ++;
-			}
-			sourceData.push(data);
-		}else{//如果格式错误，就退出循环
-			flag = false;
-			break;
-		}
-	}
-	if(flag === false){//格式错误返回null,否则返回对象
-		return null;
+function isTimeIDFormat(str){
+	var timeIDPattern = /^((\d|[a-f]){8})-((\d|[a-f]){4})-((\d|[a-f]){4})-((\d|[a-f]){4})-((\d|[a-f]){12})$/;
+	if(timeIDPattern.test(str)){
+		return true;
 	}else{
-		sourceData = sourceData.sort(function(a, b){
-			if(a.time > b.time){
-				return false;
-			}else{
-				return true;
-			}
-		});
-		return sourceData;
+		return false;
 	}
 
 }
 
+function isTimeFormat(str){
+	var timePattern = /^[0-9]{4}\/(0[1-9]{1}|1[0-2]{1})\/(0[1-9]{1}|[1-2]{1}[0-9]{1}|30)\s{1}(0\d{1}|1\d{1}|2[0-3]):[0-5]\d{1}:([0-5]\d{1})$/;
+	if(timePattern.test(str)){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function isPositionFormat(str){
+	var positionPattern = /^-?\w+\s(-?\d+\s-?\d+\s-?\d+\s-?\d+|-?\d+\s-?\d+)$/;
+	if(positionPattern.test(str)){
+		return true;
+	}else{
+		return false;
+	}
+}
 
 function isFormatCorrectAndTransferToArrOrderByTime(sourceDataString){
-	var timeIDPattern = /^((\d|[a-f]){8})-((\d|[a-f]){4})-((\d|[a-f]){4})-((\d|[a-f]){4})-((\d|[a-f]){12})$/;//
-	var timePattern = /^[0-9]{4}\/(0[1-9]{1}|1[0-2]{1})\/(0[1-9]{1}|[1-2]{1}[0-9]{1}|30)\s{1}(0\d{1}|1\d{1}|2[0-3]):[0-5]\d{1}:([0-5]\d{1})$/;
-	var positionPattern = /^-?\w+\s(-?\d+\s-?\d+\s-?\d+\s-?\d+|-?\d+\s-?\d+)$/;
 
 	var sourceDataAttr = sourceDataString.split('\n');
 
@@ -137,12 +102,12 @@ function isFormatCorrectAndTransferToArrOrderByTime(sourceDataString){
 	var flag;
 	i = 0;
 	while( i<sourceDataAttr.length){
-		if(timeIDPattern.test(sourceDataAttr[i])){//判断是否是时间id
+		if(isTimeIDFormat(sourceDataAttr[i])){//判断是否是时间id
 			
 			data = {};
 			data.id = sourceDataAttr[i];
 			i ++;
-			if(timePattern.test(sourceDataAttr[i])){//如果下一行是时间，就没问题，否则格式错误
+			if(isTimeFormat(sourceDataAttr[i])){//如果下一行是时间，就没问题，否则格式错误
 				data.time = sourceDataAttr[i];
 				i ++;
 			}else{
@@ -150,7 +115,7 @@ function isFormatCorrectAndTransferToArrOrderByTime(sourceDataString){
 				break;
 			}
 			data.animal = [];
-			while(positionPattern.test(sourceDataAttr[i])){//循环遍历该时刻的所有动物记录
+			while(isPositionFormat(sourceDataAttr[i])){//循环遍历该时刻的所有动物记录
 				animalDataAttr = animalSplit(sourceDataAttr[i]);
 				animal = {};
 				animal.name = animalDataAttr[0];
