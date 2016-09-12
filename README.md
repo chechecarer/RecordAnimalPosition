@@ -35,3 +35,27 @@
     * 如果预处理阶段的数据没有问题，就把所有动物的位置按照指定格式现存放到对象中，在存放到数组中，将数组返回。
     * 如果数据格式错误，则输出Invalid Format;
     * 如果数据错误，则输出Conflict found at {id}
+
+##测试说明
+####测试工具
+    jasmine 测试框架
+####测试结果查看
+    运行文件test/test.html，即可查看所有测试结果
+####测试单元
+    * 格式验证测试
+      - 时间ID格式测试                                  需测试函数：isTimeIDFormat
+      - 时间格式测试                                    需测试函数：isTimeFormat
+      - 动物位置变化信息测试                            需测试函数：isPositionFormat
+    * 数据正确性验证测试                                需测试函数：isDataCorrect
+    * 数据转化功能测试
+      - 历史数据字符串转数组测试                        需测试函数：strToArr
+      - 输出信息数组转字符串测试                        需测试函数：arrToOutputStr
+    * 数据排序功能测试
+      - 数据按时间降序排序测试                          需测试函数：sourceDataSortByTimeDesc
+      - 动物按ID升序测试                                需测试函数：animalSortOrderByIDASC
+    * 获取需求信息功能测试
+      - 由源数组信息得到动物信息和位置变化信息          需测试函数：idDataCorrectWithGetAnimalsInfoAndPositionFromArrData
+      - 由动物信息和位置变化信息得到某时刻的位置信息    需测试函数：getPositionWithAnimalsInfoAndPosition
+    * 对getSnapshot函数的测试                           需测试函数：getSnapshot
+
+
