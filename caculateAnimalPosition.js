@@ -1,25 +1,18 @@
 
 /*
-var sourceDataString = "e4e87cb2-8e9a-4749-abb6-26c59344dfee\n"+
-				   "2016/09/02 22:30:46\n"+
-				   "cat1 10 9\n"+
-				   "351055db-33e6-4f9b-bfe1-16f1ac446ac1\n"+
-				   "2016/09/02 22:30:52\n"+
-				   "cat1 10 9 2 -1\n"+
-				   "cat2 2 3\n"+
-				   "dcfa0c7a-5855-4ed2-bc8c-4accae8bd155\n"+
-				   "2016/09/02 22:31:02\n"+
-				   "cat1 12 8 3 4";
+	var sourceDataString = "e4e87cb2-8e9a-4749-abb6-26c59344dfee\n"+
+	   "2016/09/02 22:30:46\n"+
+	   "cat1 10 9\n"+
+	   "351055db-33e6-4f9b-bfe1-16f1ac446ac1\n"+
+	   "2016/09/02 22:30:52\n"+
+	   "cat1 10 9 2 -1\n"+
+	   "cat2 2 3\n"+
+	   "dcfa0c7a-5855-4ed2-bc8c-4accae8bd155\n"+
+	   "2016/09/02 22:31:02\n"+
+	   "cat1 12 8 3 4";
 */
-function strToArr(animalDataStr){
-	var animalDataAttr = animalDataStr.split(" ");
-	animalDataAttr = animalDataAttr.filter(function(item){
-		if(item !== " "){
-			return true;
-		}
-	});
-	return animalDataAttr;
-}
+
+//************************************* begin data format  *********************************************
 
 function isTimeIDFormat(str){
 	var timeIDPattern = /^((\d|[a-f]){8})-((\d|[a-f]){4})-((\d|[a-f]){4})-((\d|[a-f]){4})-((\d|[a-f]){12})$/;
@@ -48,30 +41,6 @@ function isPositionFormat(str){
 		return false;
 	}
 }
-
-function sourceDataSortByTimeDesc(sourceData){
-	sourceData = sourceData.sort(function(a, b){
-		if(a.time > b.time){
-			return false;
-		}else{
-			return true;
-		}
-	});
-	return sourceData;
-
-}
-
-function animalSortOrderByIDASC(animals){
-	animals = animals.sort(function(a, b){
-		if(a < b){
-			return false;
-		}else{
-			return true;
-		}
-	});
-	return animals;
-}
-
 
 function isFormatCorrectAndTransferToArr(sourceDataString){
 
@@ -130,6 +99,61 @@ function isFormatCorrectAndTransferToArr(sourceDataString){
 		return sourceData;
 	}
 }
+//************************************* end data format  *********************************************
+
+//************************************* begin sort  ****************************************
+function sourceDataSortByTimeDesc(sourceData){
+	sourceData = sourceData.sort(function(a, b){
+		if(a.time > b.time){
+			return false;
+		}else{
+			return true;
+		}
+	});
+	return sourceData;
+
+}
+
+function animalSortOrderByIDASC(animals){
+	animals = animals.sort(function(a, b){
+		if(a < b){
+			return false;
+		}else{
+			return true;
+		}
+	});
+	return animals;
+}
+//************************************* end sort  ****************************************
+//************************************* begin data transfer ****************************************
+function strToArr(animalDataStr){
+	var animalDataAttr = animalDataStr.split(" ");
+	animalDataAttr = animalDataAttr.filter(function(item){
+		if(item !== " "){
+			return true;
+		}
+	});
+	return animalDataAttr;
+}
+
+function arrToOutputStr(result){
+	var output = "";
+	for(i=0; i<result.length; i++){
+		for(j=0; j<result[i].length; j ++){
+			output += result[i][j];
+			if(j === result[i].length -1){
+				output += "\n";
+			}else{
+				output += " ";
+			}
+		}
+	}
+	return output;
+}
+
+//************************************* end data transfer ****************************************
+//************************************* begin data correct & get info ************************************
+
 
 function isDataCorrect(positionArr){
 
@@ -187,7 +211,6 @@ function idDataCorrectWithGetAnimalsInfoAndPositionInfoFromArrData(data, id){
 		if(data[i].id === id){
 			startPos = i;
 			isStart = true;
-			console.log('start')
 		}
 
 		animalTemp = data[i].animal;
@@ -251,21 +274,9 @@ function getPositionWithAnimalsInfoAndPositionInfo(animals, positionArr){
 	return result;
 }
 
-function arrToOutputStr(result){
-	var output = "";
-	for(i=0; i<result.length; i++){
-		for(j=0; j<result[i].length; j ++){
-			output += result[i][j];
-			if(j === result[i].length -1){
-				output += "\n";
-			}else{
-				output += " ";
-			}
-		}
-	}
-	return output;
-}
+//************************************* end data correct & get info ***************************************
 
+//************************************* main function ******************************************
 
 function getSnapshot(historyData, id){
 	var data;
