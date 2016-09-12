@@ -65,3 +65,5 @@
     * 对getSnapshot函数的测试                           需测试函数：getSnapshot
 
 
+##附
+    地址：https://github.com/chechecarer/RecordAnimalPosition.git
